@@ -46,9 +46,9 @@ select 이름
 4. 주문테이블에서 요청일보다 발송일이 7일 이상 늦은 주문내역
 */
 select *
-     , datediff(요청일, 발송일) as 차이
+     , datediff(발송일, 요청일) as 지연일수
   from 주문
- where datediff(요청일, 발송일) >= 7
+ where datediff(발송일, 요청일) >= 7
  order by 7;
 
 /*
@@ -83,6 +83,23 @@ select 고객번호
             when weekday(주문일) = 3 then '목요일'
             when weekday(주문일) = 4 then '금요일'
             when weekday(주문일) = 5 then '토요일'
-            else '일요일'
+            when weekday(주문일) = 6 then '일요일'
+       end as 한글요일
+  from 주문;
+
+select 고객번호
+     , 주문일
+     , year(주문일) as 주문년도
+     , quarter(주문일) as 주문분기
+     , month(주문일) as 주문월
+     , day(주문일) as 주문일
+     , weekday(주문일) as 주문요일
+     , case weekday(주문일) when 0 then '월요일'
+                         when 1 then '화요일'
+                         when 2 then '수요일'
+                         when 3 then '목요일'
+                         when 4 then '금요일'
+                         when 5 then '토요일'
+                         when 6 then '일요일'
        end as 한글요일
   from 주문;
